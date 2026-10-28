@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Meet Intelligence",
+  "version": "0.1.0",
+  "description": "Speaker-separated transcripts, camera and mic tracking, and AI summaries for Google Meet.",
+  "permissions": [
+    "storage",
+    "sidePanel",
+    "unlimitedStorage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://meet.google.com/*",
+    "https://generativelanguage.googleapis.com/*",
+    "https://api.groq.com/*",
+    "http://localhost:8000/*",
+    "http://127.0.0.1:8000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://meet.google.com/*"
+      ],
+      "js": [
+        "meet-core.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "action": {
+    "default_title": "Open Meet Intelligence"
+  }
+}

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meet Intelligence</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <header>
+    <h1>Meet Intelligence</h1>
+    <p id="status" class="status">Waiting for a call</p>
+  </header>
+
+  <main>
+    <div class="bot-control-card" id="bot-control-card">
+      <div class="bot-card-header">
+        <div class="bot-badge-wrap">
+          <span class="bot-pulse-dot" id="side-bot-dot"></span>
+          <span id="side-bot-label">Bot: Offline</span>
+        </div>
+        <a id="btn-open-dash" class="btn-dash-link" href="http://localhost:8000/dashboard" target="_blank" title="Open Fullscreen Web Dashboard">🌐 Live Dashboard</a>
+      </div>
+      <div class="bot-card-actions">
+        <button id="btn-side-launch-bot" class="btn-bot-launch">🚀 1-Click Deploy Bot</button>
+        <button id="btn-side-stop-bot" class="btn-bot-stop" style="display: none;">🛑 Stop Bot</button>
+      </div>
+      <label class="auto-deploy-label">
+        <input type="checkbox" id="chk-auto-deploy">
+        <span>⚡ Auto-start bot when I join a meeting</span>
+      </label>
+    </div>
+
+    <section id="empty" class="empty">
+      <p>No meeting captured yet.</p>
+      <p class="muted">Join a Google Meet call. Captions switch on by themselves and this panel fills in as people speak.</p>
+      <button id="btn-import-empty">Import bot session (.jsonl)</button>
+    </section>
+    <input id="file-import" type="file" accept=".jsonl,.json" hidden>
+
+    <div id="live" hidden>
+      <div class="stats" aria-label="Live headcount">
+        <div><b id="stat-people">0</b><span>in the call</span></div>
+        <div><b id="stat-cam">0</b><span>camera on</span></div>
+        <div><b id="stat-mic">0</b><span>mic unmuted</span></div>
+        <div><b id="stat-devices">0🖥️ 0📱</b><span>devices</span></div>
+      </div>
+
+      <div class="actions">
+        <button id="btn-live" class="primary">Summarize so far</button>
+        <button id="btn-final">Final report</button>
+        <button id="btn-reset" class="quiet" title="Clear this session and start fresh">Start fresh</button>
+      </div>
+      <p id="msg" class="msg" role="status"></p>
+
+      <section id="sec-live" hidden>
+        <h2>Catch-up</h2>
+        <div id="live-summary"></div>
+      </section>
+
+      <section id="sec-final" hidden>
+        <div class="report-header-row">
+          <h2>Executive Report</h2>
+          <div class="view-switch">
+            <button id="btn-view-rich" class="active" title="Formatted view">✨ Rich</button>
+            <button id="btn-view-raw" title="Raw markdown view">📝 Raw</button>
+          </div>
+        </div>
+        <div id="final-report-rich" class="rich-report"></div>
+        <pre id="final-report" class="report" hidden></pre>
+        <div class="report-actions">
+          <button id="btn-copy-report">📋 Copy</button>
+          <button id="btn-download-report" class="primary">Download report (.md)</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Transcript</h2>
+        <div id="transcript" class="transcript" tabindex="0"></div>
+      </section>
+
+      <section>
+        <h2>Camera and mic time</h2>
+        <div id="engagement"></div>
+      </section>
+
+      <section class="foot">
+        <button id="btn-import">Import session</button>
+        <button id="btn-raw">Download raw data (.json)</button>
+        <button id="btn-clear" class="quiet">Clear this meeting</button>
+      </section>
+    </div>
+
+    <details class="settings">
+      <summary>Groq API settings</summary>
+      <label>Groq API key
+        <input id="set-key" type="password" autocomplete="off" placeholder="Paste gsk_... key from console.groq.com">
+      </label>
+      <label>Model for catch-ups (fast)
+        <input id="set-live" list="model-list">
+      </label>
+      <label>Model for the final report
+        <input id="set-final" list="model-list">
+      </label>
+      <datalist id="model-list">
+        <option value="llama-3.1-8b-instant"></option>
+        <option value="llama-3.3-70b-versatile"></option>
+        <option value="qwen/qwen3.8-27b"></option>
+        <option value="openai/gpt-oss-20b"></option>
+      </datalist>
+      <button id="btn-models">Load models available to my key</button>
+      <p class="muted">The key stays in this browser. Groq automatically falls back to llama-3.1-8b-instant if a model hits a rate limit.</p>
+    </details>
+  </main>
+
+  <script src="lib.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>

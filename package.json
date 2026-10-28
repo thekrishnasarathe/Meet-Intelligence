@@ -1,0 +1,17 @@
+{
+  "name": "meet-intel",
+  "version": "1.0.0",
+  "description": "Speaker-separated transcripts, camera and mic tracking, and AI summaries for Google Meet.",
+  "scripts": {
+    "test": "node tests/core.test.js && node tests/sidepanel.test.js"
+  },
+  "keywords": [
+    "google-meet",
+    "transcription",
+    "ai-summary",
+    "chrome-extension",
+    "playwright-bot"
+  ],
+  "author": "Krishna Sarathe",
+  "license": "MIT"
+}

@@ -1,0 +1,56 @@
+{
+  "scenario_name": "team_sync_4_participants",
+  "description": "Scripted 4-person meeting with desktop, mobile, camera/mic toggles, and joins/leaves",
+  "duration_sec": 300,
+  "participants": [
+    {
+      "participant_id": "p_alice",
+      "person_key": "alice",
+      "display_name": "Alice Smith",
+      "expected_device": "desktop",
+      "timeline": [
+        { "at_sec": 0, "action": "join", "cam": "on", "mic": "off" },
+        { "at_sec": 30, "action": "mic_on" },
+        { "at_sec": 60, "action": "mic_off" },
+        { "at_sec": 120, "action": "cam_off" },
+        { "at_sec": 180, "action": "cam_on" },
+        { "at_sec": 300, "action": "leave" }
+      ]
+    },
+    {
+      "participant_id": "p_bob",
+      "person_key": "bob",
+      "display_name": "Bob Jones",
+      "expected_device": "likely_mobile",
+      "timeline": [
+        { "at_sec": 10, "action": "join", "cam": "on", "mic": "off" },
+        { "at_sec": 70, "action": "mic_on" },
+        { "at_sec": 110, "action": "mic_off" },
+        { "at_sec": 240, "action": "leave" }
+      ]
+    },
+    {
+      "participant_id": "p_charlie",
+      "person_key": "charlie",
+      "display_name": "+1 (555) 019-2834",
+      "expected_device": "phone_dial_in",
+      "timeline": [
+        { "at_sec": 20, "action": "join", "cam": "off", "mic": "off" },
+        { "at_sec": 130, "action": "mic_on" },
+        { "at_sec": 170, "action": "mic_off" },
+        { "at_sec": 290, "action": "leave" }
+      ]
+    },
+    {
+      "participant_id": "p_dana",
+      "person_key": "dana",
+      "display_name": "Dana White",
+      "expected_device": "desktop",
+      "timeline": [
+        { "at_sec": 40, "action": "join", "cam": "on", "mic": "on" },
+        { "at_sec": 90, "action": "mic_off" },
+        { "at_sec": 280, "action": "leave" }
+      ]
+    }
+  ]
+}

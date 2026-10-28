@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meet Intelligence • Live Bot Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #090d16;
+      --bg-card: rgba(17, 24, 39, 0.75);
+      --bg-card-hover: rgba(26, 36, 56, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(99, 102, 241, 0.35);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --accent: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.2);
+      --coral: #f43f5e;
+      --amber: #f59e0b;
+      --cyan: #06b6d4;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+      --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.10) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Nav */
+    header {
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 28px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      background: var(--accent-gradient);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+    }
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand-badge {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      background: rgba(17, 24, 39, 0.8);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+    }
+    .status-badge.live {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.1);
+      color: #34d399;
+    }
+    .status-badge.running {
+      border-color: rgba(99, 102, 241, 0.4);
+      background: rgba(99, 102, 241, 0.12);
+      color: #a5b4fc;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+      animation: pulse 1.8s infinite;
+    }
+    .pulse-dot.idle {
+      background: var(--text-dim);
+      box-shadow: none;
+      animation: none;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.7; }
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 28px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* Hero / 1-Click Launch Bar */
+    .launch-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+    }
+    .launch-panel::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent-gradient);
+    }
+    .launch-form {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 320px;
+    }
+    .input-wrapper {
+      position: relative;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      font-size: 16px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .input-field {
+      width: 100%;
+      padding: 12px 14px 12px 42px;
+      background: rgba(10, 15, 29, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+    .btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+    .btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+    }
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: 0 6px 22px rgba(99, 102, 241, 0.55);
+    }
+    .btn-danger {
+      background: rgba(244, 63, 94, 0.15);
+      border-color: rgba(244, 63, 94, 0.35);
+      color: #fda4af;
+    }
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(244, 63, 94, 0.25);
+      border-color: #f43f5e;
+      color: #fff;
+    }
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-subtle);
+      color: var(--text-main);
+    }
+    .btn-ghost:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Stepper Lifecycle Banner */
+    .lifecycle-stepper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .step-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+    }
+    .step-pill.active {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: var(--accent);
+      color: #c7d2fe;
+      font-weight: 600;
+    }
+    .step-pill.done {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: var(--emerald);
+      color: #6ee7b7;
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: var(--shadow-card);
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-2px);
+    }
+    .metric-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .metric-icon {
+      font-size: 18px;
+    }
+    .metric-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .metric-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Sound visualizer wave */
+    .audio-wave {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 14px;
+    }
+    .audio-bar {
+      width: 3px;
+      background: var(--emerald);
+      border-radius: 2px;
+      animation: sound-bounce 1s infinite alternate;
+    }
+    .audio-bar:nth-child(1) { height: 4px; animation-delay: 0.1s; }
+    .audio-bar:nth-child(2) { height: 12px; animation-delay: 0.25s; }
+    .audio-bar:nth-child(3) { height: 8px; animation-delay: 0.4s; }
+    .audio-bar:nth-child(4) { height: 14px; animation-delay: 0.15s; }
+    @keyframes sound-bounce {
+      0% { transform: scaleY(0.3); }
+      100% { transform: scaleY(1); }
+    }
+
+    /* Workspace 2-Column Grid */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: start;
+    }
+    @media (max-width: 1024px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Card Panels */
+    .panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Live Transcript Feed */
+    .transcript-container {
+      height: 540px;
+      overflow-y: auto;
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      scroll-behavior: smooth;
+    }
+    .transcript-empty {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-dim);
+      padding: 32px;
+      gap: 12px;
+    }
+    .transcript-empty-icon {
+      font-size: 40px;
+      opacity: 0.5;
+    }
+
+    .utterance-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 10px 14px;
+      background: rgba(13, 20, 36, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      transition: all 0.15s ease;
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .utterance-item:hover {
+      background: rgba(22, 33, 56, 0.7);
+      border-color: var(--border-glow);
+    }
+    .utterance-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+    }
+    .speaker-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #e0e7ff;
+    }
+    .speaker-avatar {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .utterance-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .utterance-text {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #f3f4f6;
+    }
+    .utterance-text .partial {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Tabs Bar in Right Panel */
+    .tabs-nav {
+      display: flex;
+      padding: 4px;
+      background: rgba(10, 15, 29, 0.6);
+      border-radius: var(--radius-md);
+      gap: 4px;
+      border: 1px solid var(--border-subtle);
+    }
+    .tab-btn {
+      padding: 7px 14px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    }
+
+    .tab-content {
+      padding: 20px 22px;
+      display: none;
+      min-height: 480px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Participants Grid */
+    .participants-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .participant-card {
+      background: rgba(13, 20, 36, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+    .participant-card:hover {
+      border-color: var(--border-glow);
+      background: rgba(22, 33, 56, 0.7);
+    }
+    .p-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .p-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+    .p-name {
+      font-weight: 600;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+    .p-device {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+    }
+    .p-device.mobile {
+      color: #fbbf24;
+      border-color: rgba(251, 191, 36, 0.3);
+      background: rgba(251, 191, 36, 0.12);
+    }
+    .p-device.desktop {
+      color: #93c5fd;
+      border-color: rgba(147, 197, 253, 0.3);
+      background: rgba(147, 197, 253, 0.1);
+    }
+    .p-device.unknown {
+      color: #94a3b8;
+      border-color: rgba(148, 163, 184, 0.25);
+      background: rgba(148, 163, 184, 0.08);
+    }
+    .p-indicators {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .ind-pill {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .ind-pill.on {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .ind-pill.off {
+      background: rgba(244, 63, 94, 0.12);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+    }
+
+    /* Summary & Report Boxes */
+    .summary-box {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .summary-card {
+      background: rgba(13, 20, 36, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+    .summary-card h4 {
+      font-size: 13px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+    .summary-card ul {
+      padding-left: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #e5e7eb;
+    }
+    .summary-card li { margin-bottom: 4px; }
+    .action-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    .action-table th, .action-table td {
+      padding: 8px 10px;
+      border: 1px solid var(--border-subtle);
+      text-align: left;
+    }
+    .action-table th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+    }
+
+    .report-viewer {
+      background: rgba(10, 15, 29, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      max-height: 480px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-family: inherit;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 18px 24px;
+      font-size: 13px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border-subtle);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <a href="#" class="brand">
+      <div class="brand-logo">🎙️</div>
+      <div>
+        <span class="brand-title">Meet Intelligence</span>
+        <span class="brand-badge">Command Center</span>
+      </div>
+    </a>
+
+    <div class="nav-actions">
+      <div id="bot-live-badge" class="status-badge">
+        <span class="pulse-dot idle" id="bot-pulse"></span>
+        <span id="bot-status-text">Bot Idle</span>
+      </div>
+      <button class="btn btn-ghost" id="btn-refresh" title="Refresh Live State">🔄 Refresh</button>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main>
+
+    <!-- 1-Click Launch Bar -->
+    <section class="launch-panel">
+      <div class="launch-form">
+        <div class="input-wrapper">
+          <span class="input-icon">🔗</span>
+          <input type="text" id="meet-url-input" class="input-field" placeholder="https://meet.google.com/xxx-yyyy-zzz" autocomplete="off">
+        </div>
+        <div class="input-wrapper" style="max-width: 170px;">
+          <span class="input-icon">🤖</span>
+          <input type="text" id="bot-name-input" class="input-field" value="Notes Bot" placeholder="Bot Name">
+        </div>
+        <button class="btn btn-primary" id="btn-launch-bot">🚀 1-Click Deploy Bot</button>
+        <button class="btn btn-danger" id="btn-stop-bot" style="display: none;">🛑 Stop Bot</button>
+      </div>
+
+      <!-- Lifecycle Stepper -->
+      <div class="lifecycle-stepper" id="lifecycle-stepper">
+        <div class="step-pill" id="step-launch"><span>1</span> Launch</div>
+        <div class="step-pill" id="step-lobby"><span>2</span> Pre-Join & Mute</div>
+        <div class="step-pill" id="step-call"><span>3</span> In Call</div>
+        <div class="step-pill" id="step-rec"><span>4</span> Live Transcribing</div>
+      </div>
+    </section>
+
+    <!-- Metrics Cards Grid -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>In Call Headcount</span>
+          <span class="metric-icon">👥</span>
+        </div>
+        <div class="metric-val" id="val-people">0</div>
+        <div class="metric-sub">
+          <span class="pill" id="val-desktop">0 🖥️ Desktop</span>
+          <span class="pill" id="val-mobile">0 📱 Mobile</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>Cameras Active</span>
+          <span class="metric-icon">📹</span>
+        </div>
+        <div class="metric-val" id="val-cam">0</div>
+        <div class="metric-sub" id="val-cam-pct">0% video engagement</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>Microphones Active</span>
+          <span class="metric-icon">🎙️</span>
+        </div>
+        <div class="metric-val" id="val-mic">
+          <span>0</span>
+        </div>
+        <div class="metric-sub">
+          <div class="audio-wave" id="mic-wave" style="display: none;">
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+            <div class="audio-bar"></div>
+          </div>
+          <span id="val-mic-sub">All attendees muted</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <span>Subtitles Recorded</span>
+          <span class="metric-icon">📝</span>
+        </div>
+        <div class="metric-val" id="val-captions">0</div>
+        <div class="metric-sub" id="val-duration">Duration: 00:00</div>
+      </div>
+    </section>
+
+    <!-- Workspace Grid -->
+    <div class="workspace-grid">
+
+      <!-- Left Column: Live Transcript Feed -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>💬 Live Subtitle Stream</span>
+            <span class="pill" id="live-turns-count">0 turns</span>
+          </div>
+          <button class="btn btn-ghost" id="btn-copy-transcript" style="padding: 6px 12px; font-size: 12px;">📋 Copy</button>
+        </div>
+
+        <div class="transcript-container" id="transcript-feed">
+          <div class="transcript-empty">
+            <div class="transcript-empty-icon">🎧</div>
+            <p><strong>Waiting for meeting speech...</strong></p>
+            <p style="font-size: 12px; color: var(--text-dim);">When attendees speak with microphone unmuted, live captions and speaker names will stream here in real time.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Tabs Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="tabs-nav">
+            <button class="tab-btn active" data-tab="tab-participants">👥 Attendees</button>
+            <button class="tab-btn" data-tab="tab-catchup">⚡ Catch-Up</button>
+            <button class="tab-btn" data-tab="tab-report">📄 Executive Report</button>
+          </div>
+        </div>
+
+        <!-- Tab 1: Attendees Grid -->
+        <div class="tab-content active" id="tab-participants">
+          <div class="participants-list" id="participants-list">
+            <div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 48px;">
+              No attendees tracked yet. Start or join a meeting to begin.
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: AI Catch-Up (Rolling Summary) -->
+        <div class="tab-content" id="tab-catchup">
+          <div class="summary-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <p style="font-size: 13px; color: var(--text-muted);">Instant rolling catch-up powered by Groq LLaMA 3.3</p>
+              <button class="btn btn-primary" id="btn-do-catchup" style="padding: 6px 14px; font-size: 12px;">⚡ Summarize So Far</button>
+            </div>
+
+            <div class="summary-card" id="card-topic">
+              <h4>Current Topic</h4>
+              <p id="topic-text" style="font-size: 14px; font-weight: 600;">No topic extracted yet.</p>
+            </div>
+
+            <div class="summary-card" id="card-points">
+              <h4>Key Discussion Points</h4>
+              <ul id="points-list">
+                <li>Discussion points will appear here.</li>
+              </ul>
+            </div>
+
+            <div class="summary-card" id="card-decisions">
+              <h4>Decisions & Agreements</h4>
+              <ul id="decisions-list">
+                <li>None recorded yet.</li>
+              </ul>
+            </div>
+
+            <div class="summary-card" id="card-actions">
+              <h4>Action Items</h4>
+              <div id="actions-table-wrap">
+                <p style="font-size: 12px; color: var(--text-dim);">None assigned yet.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Executive Final Report -->
+        <div class="tab-content" id="tab-report">
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <p style="font-size: 13px; color: var(--text-muted);">Complete structured report with participation metrics</p>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-primary" id="btn-generate-report" style="padding: 6px 14px; font-size: 12px;">✨ Generate Report</button>
+                <button class="btn btn-ghost" id="btn-download-report" style="padding: 6px 12px; font-size: 12px;" disabled>📥 Download .md</button>
+              </div>
+            </div>
+
+            <div class="report-viewer" id="report-viewer">Click "Generate Report" to build the comprehensive AI report from all recorded meeting subtitles and telemetry.</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    Meet Intelligence 🎙️ • Real-Time Google Meet Telemetry & AI Report Pipeline • $0 Free Infrastructure
+  </footer>
+
+  <script>
+    (function() {
+      let currentMeetingId = 'xhu-zcnt-jbe';
+      let pollTimer = null;
+      let lastTranscriptCount = 0;
+      let activeReportMarkdown = '';
+
+      const $ = (id) => document.getElementById(id);
+
+      // Auto-extract meeting ID from URL
+      function extractId(url) {
+        const m = url.match(/\/([a-z]{3}-[a-z]{4}-[a-z]{3})/i);
+        return m ? m[1].toLowerCase() : url.trim();
+      }
+
+      function hashColor(name) {
+        let h = 0;
+        for (let i = 0; i < (name || '').length; i++) h = (h * 31 + name.charCodeAt(i)) % 360;
+        return `hsl(${h}, 65%, 48%)`;
+      }
+
+      // Tab switcher
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          const target = $(btn.getAttribute('data-tab'));
+          if (target) target.classList.add('active');
+        });
+      });
+
+      // Poll meeting & bot status
+      async function pollLiveState() {
+        const urlVal = $('meet-url-input').value.trim();
+        const mid = extractId(urlVal) || currentMeetingId;
+        if (!mid) return;
+
+        try {
+          // 1. Fetch live meeting payload
+          const res = await fetch(`/meetings/${mid}/live`);
+          if (res.ok) {
+            const data = await res.json();
+            renderLivePayload(data);
+          } else {
+            // Meeting session not yet started or idle
+            checkBotStatus(mid);
+          }
+        } catch (e) {
+          console.debug('Polling error:', e);
+        }
+      }
+
+      async function checkBotStatus(mid) {
+        try {
+          const res = await fetch(`/bot/${mid}/status`);
+          if (res.ok) {
+            const st = await res.json();
+            updateBotBadge(st.running, st.pid);
+          } else {
+            updateBotBadge(false, null);
+          }
+        } catch (e) {
+          updateBotBadge(false, null);
+        }
+      }
+
+      function updateBotBadge(running, pid) {
+        const badge = $('bot-live-badge');
+        const text = $('bot-status-text');
+        const pulse = $('bot-pulse');
+        const launchBtn = $('btn-launch-bot');
+        const stopBtn = $('btn-stop-bot');
+
+        if (running) {
+          badge.className = 'status-badge live';
+          pulse.className = 'pulse-dot';
+          text.textContent = `Bot Active in Meet (PID: ${pid || ''})`;
+          launchBtn.style.display = 'none';
+          stopBtn.style.display = 'inline-flex';
+          setStep(4);
+        } else {
+          badge.className = 'status-badge';
+          pulse.className = 'pulse-dot idle';
+          text.textContent = 'Bot Offline';
+          launchBtn.style.display = 'inline-flex';
+          stopBtn.style.display = 'none';
+          setStep(0);
+        }
+      }
+
+      function setStep(stepNum) {
+        $('step-launch').className = 'step-pill' + (stepNum >= 1 ? (stepNum > 1 ? ' done' : ' active') : '');
+        $('step-lobby').className = 'step-pill' + (stepNum >= 2 ? (stepNum > 2 ? ' done' : ' active') : '');
+        $('step-call').className = 'step-pill' + (stepNum >= 3 ? (stepNum > 3 ? ' done' : ' active') : '');
+        $('step-rec').className = 'step-pill' + (stepNum >= 4 ? ' active' : '');
+      }
+
+      function renderLivePayload(data) {
+        const hc = data.headcount || {};
+        $('val-people').textContent = hc.total || 0;
+        $('val-desktop').textContent = `${hc.desktop_count || 0} 🖥️ Desktop`;
+        let mobText = `${hc.mobile_count || 0} 📱 Mobile`;
+        if (hc.unknown_count && hc.unknown_count > 0) {
+          mobText += ` · ${hc.unknown_count} ❓ Unknown`;
+        }
+        $('val-mobile').textContent = mobText;
+        $('val-cam').textContent = hc.cam_on || 0;
+        $('val-mic').textContent = hc.mic_on || 0;
+        $('val-captions').textContent = data.captions_count || 0;
+
+        // Cam %
+        if (hc.total > 0) {
+          const pct = Math.round((hc.cam_on / hc.total) * 100);
+          $('val-cam-pct').textContent = `${pct}% video active`;
+        }
+
+        // Mic audio wave
+        if (hc.mic_on > 0) {
+          $('mic-wave').style.display = 'inline-flex';
+          $('val-mic-sub').textContent = `${hc.mic_on} attendee(s) unmuted`;
+        } else {
+          $('mic-wave').style.display = 'none';
+          $('val-mic-sub').textContent = 'All attendees muted';
+        }
+
+        // Duration
+        if (data.started_at) {
+          const durSec = Math.max(0, Math.floor((Date.now() - new Date(data.started_at).getTime()) / 1000));
+          const m = Math.floor(durSec / 60);
+          const s = durSec % 60;
+          $('val-duration').textContent = `Duration: ${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        // Bot badge
+        const bot = data.bot || {};
+        updateBotBadge(bot.running, bot.pid);
+
+        // Participants list
+        renderParticipants(data.participants || []);
+
+        // Transcript
+        renderTranscript(data.transcript || []);
+
+        // Live summary if present
+        if (data.live_summary) {
+          renderSummary(data.live_summary);
+        }
+      }
+
+      function renderParticipants(parts) {
+        const wrap = $('participants-list');
+        if (!parts.length) {
+          wrap.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 48px;">No attendees detected in call yet.</div>';
+          return;
+        }
+
+        wrap.innerHTML = parts.map(p => {
+          const name = p.name || 'Participant';
+          const avBg = hashColor(name);
+          const init = name.charAt(0).toUpperCase();
+          const dev = p.device || 'unknown';
+          const isMobile = dev === 'mobile' || dev === 'phone_dial_in' || dev === 'phone_dialin' || dev === 'likely_mobile';
+          const isDesktop = dev === 'desktop' || dev === 'likely_desktop';
+          const devLabel = isMobile ? '📱 Mobile' : (isDesktop ? '🖥️ Desktop' : '❓ Unknown');
+          const devClass = isMobile ? 'mobile' : (isDesktop ? 'desktop' : 'unknown');
+          const camOn = p.cam === true;
+          const micOn = p.mic === true;
+
+          return `
+            <div class="participant-card">
+              <div class="p-head">
+                <div class="p-avatar" style="background: ${avBg}">${init}</div>
+                <div class="p-name" title="${name}">${name}</div>
+                <div class="p-device ${devClass}">${devLabel}</div>
+              </div>
+              <div class="p-indicators">
+                <div class="ind-pill ${camOn ? 'on' : 'off'}">
+                  ${camOn ? '📹 Cam On' : '🚫 Cam Off'}
+                </div>
+                <div class="ind-pill ${micOn ? 'on' : 'off'}">
+                  ${micOn ? '🎙️ Mic Active' : '🔇 Muted'}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function renderTranscript(turns) {
+        const feed = $('transcript-feed');
+        $('live-turns-count').textContent = `${turns.length} turns`;
+        if (!turns.length) return;
+
+        if (turns.length === lastTranscriptCount) return;
+        lastTranscriptCount = turns.length;
+
+        feed.innerHTML = turns.map(t => {
+          const spk = t.speaker || 'Speaker';
+          const avBg = hashColor(spk);
+          const init = spk.charAt(0).toUpperCase();
+          const ts = t.timestamp || '00:00';
+          return `
+            <div class="utterance-item">
+              <div class="utterance-meta">
+                <div class="speaker-tag">
+                  <div class="speaker-avatar" style="background: ${avBg}">${init}</div>
+                  <span>${spk}</span>
+                </div>
+                <div class="utterance-time">${ts}</div>
+              </div>
+              <div class="utterance-text">${escapeHtml(t.text)}</div>
+            </div>
+          `;
+        }).join('');
+
+        feed.scrollTop = feed.scrollHeight;
+      }
+
+      function renderSummary(s) {
+        if (!s) return;
+        if (s.current_topic) $('topic-text').textContent = s.current_topic;
+        if (s.key_points && s.key_points.length) {
+          $('points-list').innerHTML = s.key_points.map(p => `<li><strong>${escapeHtml(p.speaker || '')}:</strong> ${escapeHtml(p.point || '')}</li>`).join('');
+        }
+        if (s.decisions && s.decisions.length) {
+          $('decisions-list').innerHTML = s.decisions.map(d => `<li>${escapeHtml(d)}</li>`).join('');
+        }
+        if (s.action_items && s.action_items.length) {
+          const rows = s.action_items.map(a => `<tr><td><strong>${escapeHtml(a.owner || 'Unassigned')}</strong></td><td>${escapeHtml(a.task || '')}</td><td>${escapeHtml(a.due || '-')}</td></tr>`).join('');
+          $('actions-table-wrap').innerHTML = `<table class="action-table"><thead><tr><th>Owner</th><th>Task</th><th>Due</th></tr></thead><tbody>${rows}</tbody></table>`;
+        }
+      }
+
+      function escapeHtml(str) {
+        return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      // 1-Click Launch Bot Handler
+      $('btn-launch-bot').addEventListener('click', async () => {
+        const urlInput = $('meet-url-input').value.trim();
+        if (!urlInput) {
+          alert('Please enter or paste a valid Google Meet URL!');
+          return;
+        }
+        const name = $('bot-name-input').value.trim() || 'Notes Bot';
+        const launchBtn = $('btn-launch-bot');
+        launchBtn.disabled = true;
+        launchBtn.textContent = '🚀 Launching Bot...';
+        setStep(1);
+
+        try {
+          const res = await fetch('/bot/launch', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ url: urlInput, name: name })
+          });
+          const result = await res.json();
+          if (res.ok) {
+            currentMeetingId = result.meeting_id;
+            updateBotBadge(true, result.pid);
+            setStep(2);
+          } else {
+            alert('Error starting bot: ' + (result.detail || 'Unknown failure'));
+            launchBtn.disabled = false;
+            launchBtn.textContent = '🚀 1-Click Deploy Bot';
+            setStep(0);
+          }
+        } catch (e) {
+          alert('Could not reach backend service: ' + e);
+          launchBtn.disabled = false;
+          launchBtn.textContent = '🚀 1-Click Deploy Bot';
+          setStep(0);
+        }
+      });
+
+      // Stop Bot Handler
+      $('btn-stop-bot').addEventListener('click', async () => {
+        const urlInput = $('meet-url-input').value.trim();
+        const mid = extractId(urlInput) || currentMeetingId;
+        const stopBtn = $('btn-stop-bot');
+        stopBtn.disabled = true;
+        stopBtn.textContent = '🛑 Stopping...';
+
+        try {
+          await fetch(`/bot/${mid}/stop`, { method: 'POST' });
+          updateBotBadge(false, null);
+        } catch (e) {}
+        stopBtn.disabled = false;
+      });
+
+      // Summarize Catchup Handler
+      $('btn-do-catchup').addEventListener('click', async () => {
+        const urlInput = $('meet-url-input').value.trim();
+        const mid = extractId(urlInput) || currentMeetingId;
+        const btn = $('btn-do-catchup');
+        btn.disabled = true;
+        btn.textContent = '⚡ Summarizing...';
+
+        try {
+          const res = await fetch(`/meetings/${mid}/summarize/live`, { method: 'POST' });
+          if (res.ok) {
+            const data = await res.json();
+            renderSummary(data);
+          } else {
+            const err = await res.json();
+            alert('Summarize error: ' + (err.detail || 'Not enough audio yet'));
+          }
+        } catch (e) {
+          alert('Error: ' + e);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = '⚡ Summarize So Far';
+        }
+      });
+
+      // Generate Final Report Handler
+      $('btn-generate-report').addEventListener('click', async () => {
+        const urlInput = $('meet-url-input').value.trim();
+        const mid = extractId(urlInput) || currentMeetingId;
+        const btn = $('btn-generate-report');
+        btn.disabled = true;
+        btn.textContent = '✨ Generating Report...';
+        $('report-viewer').textContent = 'Generating full meeting report using Groq LLaMA 3.3...';
+
+        try {
+          const res = await fetch(`/meetings/${mid}/summarize/final`, { method: 'POST' });
+          if (res.ok) {
+            const data = await res.json();
+            activeReportMarkdown = data.markdown || '';
+            $('report-viewer').textContent = activeReportMarkdown;
+            $('btn-download-report').disabled = false;
+          } else {
+            const err = await res.json();
+            $('report-viewer').textContent = 'Error: ' + (err.detail || 'Could not generate report.');
+          }
+        } catch (e) {
+          $('report-viewer').textContent = 'Error: ' + e;
+        } finally {
+          btn.disabled = false;
+          btn.textContent = '✨ Generate Report';
+        }
+      });
+
+      // Download Report .md
+      $('btn-download-report').addEventListener('click', () => {
+        if (!activeReportMarkdown) return;
+        const blob = new Blob([activeReportMarkdown], { type: 'text/markdown' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `meeting-report-${currentMeetingId}.md`;
+        a.click();
+      });
+
+      // Copy Transcript
+      $('btn-copy-transcript').addEventListener('click', () => {
+        const items = Array.from(document.querySelectorAll('.utterance-item')).map(el => {
+          const spk = el.querySelector('.speaker-tag span').textContent;
+          const time = el.querySelector('.utterance-time').textContent;
+          const text = el.querySelector('.utterance-text').textContent;
+          return `[${time}] ${spk}: ${text}`;
+        });
+        if (items.length) {
+          navigator.clipboard.writeText(items.join('\n\n'));
+          const btn = $('btn-copy-transcript');
+          btn.textContent = '✅ Copied!';
+          setTimeout(() => btn.textContent = '📋 Copy', 2000);
+        }
+      });
+
+      $('btn-refresh').addEventListener('click', pollLiveState);
+
+      // Pre-fill meeting input if URL param present, or default to last session
+      const params = new URLSearchParams(window.location.search);
+      const paramMid = params.get('mid') || params.get('url');
+      if (paramMid) {
+        $('meet-url-input').value = paramMid.startsWith('http') ? paramMid : `https://meet.google.com/${paramMid}`;
+        currentMeetingId = extractId(paramMid);
+      } else {
+        $('meet-url-input').value = `https://meet.google.com/${currentMeetingId}`;
+      }
+
+      // Initial poll & start interval
+      pollLiveState();
+      pollTimer = setInterval(pollLiveState, 1500);
+    })();
+  </script>
+</body>
+</html>

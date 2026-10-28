@@ -1,0 +1,66 @@
+{
+  "version": "2.0.0",
+  "captions": {
+    "regions": [
+      "div[role=\"region\"][aria-label*=\"caption\" i]",
+      "[aria-live=\"polite\"]",
+      "[aria-live=\"assertive\"]"
+    ],
+    "on_button_label": "(?:turn on (?:live )?captions|captions \\(c\\))",
+    "off_button_label": "(?:turn off (?:live )?captions)",
+    "toggle_button": "button[aria-label*=\"caption\" i], div[role=\"button\"][aria-label*=\"caption\" i]"
+  },
+  "tiles": {
+    "participant": "[data-participant-id], [data-requested-participant-id], [data-allocation-id]",
+    "self_name_attr": "data-self-name",
+    "name_nodes": "[data-name], [data-participant-name]",
+    "self_indicator": "[data-is-self=\"true\"]",
+    "video": "video",
+    "presentation_indicator": "[data-is-presentation=\"true\"], [aria-label*=\"presentation\" i]"
+  },
+  "controls": {
+    "leave_call": "button[aria-label*=\"Leave call\" i], button[aria-label*=\"Leave\" i], button[aria-label*=\"End call\" i], button[data-tooltip*=\"Leave\" i]",
+    "mic_button": "button[aria-label*=\"microphone\" i], div[role=\"button\"][aria-label*=\"microphone\" i], button[aria-label*=\"mic\" i], div[role=\"button\"][aria-label*=\"mic\" i], button[data-is-muted], div[role=\"button\"][data-is-muted]",
+    "cam_button": "button[aria-label*=\"camera\" i], div[role=\"button\"][aria-label*=\"camera\" i], button[aria-label*=\"video\" i], div[role=\"button\"][aria-label*=\"video\" i]",
+    "more_options": "button[aria-label*=\"more options\" i], div[role=\"button\"][aria-label*=\"more options\" i], button[aria-label*=\"more\" i]",
+    "chat_button": "button[aria-label*=\"chat\" i], [role=\"button\"][aria-label*=\"chat\" i]",
+    "chat_input": "textarea[aria-label*=\"chat\" i], textarea[aria-label*=\"message\" i], input[aria-label*=\"chat\" i]",
+    "chat_send": "button[aria-label*=\"send\" i], [role=\"button\"][aria-label*=\"send\" i]"
+  },
+  "panels": {
+    "people_button": "button[aria-label*=\"everyone\" i], button[aria-label*=\"people\" i], button[aria-label*=\"participant\" i], [role=\"button\"][aria-label*=\"everyone\" i], [role=\"button\"][aria-label*=\"people\" i], [role=\"button\"][aria-label*=\"participant\" i]",
+    "people_panel": "[role=\"tabpanel\"], [aria-label*=\"people\" i][role=\"region\"], div[data-tab-id=\"people\"]",
+    "people_items": "[role=\"listitem\"][data-participant-id], [role=\"tabpanel\"] [role=\"listitem\"], div[role=\"list\"] > div[role=\"listitem\"]",
+    "people_item_name": "[data-name], span:not([class*=\"icon\"]):not([class*=\"symbol\"])",
+    "count_badge": "button[aria-label*=\"everyone\" i] span, [class*=\"count\" i], [class*=\"badge\" i]"
+  },
+  "layout": {
+    "change_layout_item": "[role=\"menuitem\"][aria-label*=\"layout\" i], [role=\"menuitem\"]:has-text(\"Change layout\")",
+    "tiled_option": "[role=\"radio\"][aria-label*=\"tiled\" i], [role=\"radio\"]:has-text(\"Tiled\")",
+    "slider": "[role=\"slider\"]"
+  },
+  "lobby": {
+    "guest_name_input": "input[aria-label*=\"name\" i], input[placeholder*=\"name\" i], input[type=\"text\"]",
+    "join_button": "button:has-text(\"Ask to join\"), button:has-text(\"Join now\"), button[aria-label*=\"join\" i]",
+    "waiting_indicator": ":has-text(\"Waiting to be let in\"), :has-text(\"Asking to be let in\"), :has-text(\"Someone will let you in shortly\")",
+    "denied_indicator": ":has-text(\"Someone denied your request to join\"), :has-text(\"You can't join this call\"), :has-text(\"You've been removed\")"
+  },
+  "indicators": {
+    "mic_off_ligatures": ["mic_off", "mic-off"],
+    "mic_on_ligatures": ["mic"],
+    "cam_off_ligatures": ["videocam_off", "video_off", "videocam-off"],
+    "cam_on_ligatures": ["videocam"],
+    "mobile_ligatures": ["smartphone", "phone_android", "phone_iphone", "stay_current_portrait", "mobile_friendly", "phone", "call"],
+    "mobile_svg_patterns": [
+      "M17\\s*1",
+      "M16\\s*1H8",
+      "M15\\.5\\s*1",
+      "M5\\s*23q",
+      "M7\\s*23q",
+      "M6\\s*22q",
+      "M19\\.95\\s*21q",
+      "M6\\.62\\s*10\\.79",
+      "M20\\.01\\s*15\\.38"
+    ]
+  }
+}

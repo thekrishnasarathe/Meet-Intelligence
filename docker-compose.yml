@@ -1,0 +1,23 @@
+services:
+  api:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - backend/.env
+    restart: unless-stopped
+
+  # The bot is not a persistent service — it joins one meeting and exits.
+  # Build its image, then run it on demand:
+  #
+  #   docker compose build bot
+  #   docker compose run --rm bot https://meet.google.com/abc-defg-hij --name "Notes Bot" --backend http://api:8000
+  bot:
+    build:
+      context: .
+      dockerfile: bot/Dockerfile
+    profiles: ["bot"]           # not started by `docker compose up`
+    depends_on: [api]
+    environment:
+      - GROQ_API_KEY

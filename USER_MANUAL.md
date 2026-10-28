@@ -150,3 +150,4 @@ You can also view everything from a dedicated web dashboard (great for secondary
 
 ### Q5: How do I update the Chrome extension after code changes?
 * **Solution**: Go to `chrome://extensions` and click the circular **Refresh/Update 🔄** icon on the Meet Intelligence card.
+

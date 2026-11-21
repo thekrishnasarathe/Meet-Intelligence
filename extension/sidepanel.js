@@ -722,7 +722,16 @@
     }
 
     async function backendFetch(path, options = {}) {
-      const hosts = ['http://127.0.0.1:8000', 'http://localhost:8000'];
+      let custom = '';
+      try {
+        if (chrome && chrome.storage && chrome.storage.local) {
+          const stored = await chrome.storage.local.get(['customBackendUrl']);
+          if (stored && stored.customBackendUrl) {
+            custom = stored.customBackendUrl.trim().replace(/\/+$/, '');
+          }
+        }
+      } catch (_) {}
+      const hosts = custom ? [custom, 'http://127.0.0.1:8000', 'http://localhost:8000'] : ['http://127.0.0.1:8000', 'http://localhost:8000'];
       let lastErr = null;
       for (const host of hosts) {
         try {
@@ -815,7 +824,15 @@
       if (!mid) return;
 
       if (dashLink) {
-        dashLink.href = 'http://localhost:8000/dashboard?mid=' + mid;
+        let custom = '';
+        try {
+          if (chrome && chrome.storage && chrome.storage.local) {
+            const stored = await chrome.storage.local.get(['customBackendUrl']);
+            if (stored && stored.customBackendUrl) custom = stored.customBackendUrl.trim().replace(/\/+$/, '');
+          }
+        } catch (_) {}
+        const base = custom || 'http://localhost:8000';
+        dashLink.href = base + '/dashboard?mid=' + mid;
       }
 
       try {

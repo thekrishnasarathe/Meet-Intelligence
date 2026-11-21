@@ -164,7 +164,35 @@ The bot will:
 
 ---
 
-### Option 4: Docker & Docker Compose
+### Option 4: Production Cloud Deployment ($0 Free Tier)
+
+Deploy the backend to **Render**, **Railway**, or any standard cloud host with zero cost:
+
+#### 1. Deploy on Render ($0 Free Tier)
+1. Fork or push this repository to your GitHub account (`thekrishnasarathe/Meet-Intelligence`).
+2. Go to [Render Dashboard](https://dashboard.render.com/) → click **New +** → **Blueprint** (or **Web Service**).
+3. Connect your repository. Render automatically reads [`render.yaml`](file:///c:/Users/krish/Desktop/meet-intel/render.yaml):
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `uvicorn backend.main:app --host 0.0.0.0 --port $PORT`
+   - **Health Check Path:** `/health`
+4. In **Environment Variables**, add:
+   - `GROQ_API_KEY`: Your free Groq API key (from [console.groq.com](https://console.groq.com))
+   - `FRONTEND_URL`: `*` (or your web domain)
+5. Click **Apply / Deploy**. Your API and Web Dashboard will be live at `https://<your-service-name>.onrender.com`!
+
+#### 2. Environment Variables Reference
+
+| Variable | Required | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `GROQ_API_KEY` | Optional | `""` | Free Groq API Key for LLM summarization. If omitted, uses heuristic transcript synthesis. |
+| `FRONTEND_URL` | Optional | `"*"` | Allowed CORS origin for web dashboard / remote clients. |
+| `BACKEND_URL` | Optional | `http://127.0.0.1:8000` | Base URL used by the background bot to stream events. |
+| `PORT` | Optional | `8000` | Port assigned dynamically by cloud provider (Render, Railway, Heroku). |
+| `PYTHON_VERSION`| Optional | `3.12.8` | Python runtime version for cloud builders. |
+
+---
+
+### Option 5: Docker & Docker Compose
 
 Run the entire backend and bot stack in isolated containers:
 

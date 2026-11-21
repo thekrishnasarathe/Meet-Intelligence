@@ -32,7 +32,14 @@ chrome.runtime.onStartup.addListener(() => {
 let queue = Promise.resolve();
 
 async function callBackend(path, options = {}) {
-  const hosts = ['http://127.0.0.1:8000', 'http://localhost:8000'];
+  let custom = '';
+  try {
+    const stored = await chrome.storage.local.get(['customBackendUrl']);
+    if (stored && stored.customBackendUrl) {
+      custom = stored.customBackendUrl.trim().replace(/\/+$/, '');
+    }
+  } catch (_) {}
+  const hosts = custom ? [custom, 'http://127.0.0.1:8000', 'http://localhost:8000'] : ['http://127.0.0.1:8000', 'http://localhost:8000'];
   let lastErr = null;
   for (const host of hosts) {
     try {

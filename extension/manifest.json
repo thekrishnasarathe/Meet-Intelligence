@@ -14,7 +14,10 @@
     "https://generativelanguage.googleapis.com/*",
     "https://api.groq.com/*",
     "http://localhost:8000/*",
-    "http://127.0.0.1:8000/*"
+    "http://127.0.0.1:8000/*",
+    "https://*.onrender.com/*",
+    "https://*.railway.app/*",
+    "https://*/*"
   ],
   "background": {
     "service_worker": "background.js"

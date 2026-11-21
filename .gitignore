@@ -1,6 +1,9 @@
 # Environment & Secrets
 .env
-*.env
+.env.*
+!.env.example
+!*.env.example
+!**/.env.example
 backend/.env
 bot/.env
 
@@ -17,10 +20,13 @@ status.json
 events.jsonl
 *.jsonl
 *.db
+*.sqlite*
 *.db-wal
 *.db-shm
+cache/
+exports/
 
-# Python
+# Python & Virtual Environments
 __pycache__/
 **/__pycache__/
 *.py[cod]
@@ -29,6 +35,7 @@ __pycache__/
 .Python
 env/
 venv/
+.venv/
 ENV/
 build/
 develop-eggs/

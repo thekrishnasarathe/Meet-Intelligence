@@ -2,6 +2,8 @@
 
 > **Speaker-separated transcripts, camera/mic engagement tracking, live catch-up summaries, and structured final reports for any Google Meet link — built to cost $0.**
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/thekrishnasarathe/Meet-Intelligence)
+
 Works on any Google Meet call (personal `@gmail.com` or Google Workspace) without requiring paid Google Workspace tiers, host OAuth permissions, or expensive third-party transcription APIs.
 
 ---

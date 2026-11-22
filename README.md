@@ -3,6 +3,11 @@
 > **Speaker-separated transcripts, camera/mic engagement tracking, live catch-up summaries, and structured final reports for any Google Meet link — built to cost $0.**
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/thekrishnasarathe/Meet-Intelligence)
+[![Live Demo](https://img.shields.io/badge/Live%20Dashboard-Render-46E3B7?style=flat&logo=render&logoColor=white)](https://meet-intelligence-api.onrender.com/dashboard)
+[![Health Status](https://img.shields.io/badge/API%20Health-200%20OK-brightgreen?style=flat)](https://meet-intelligence-api.onrender.com/health)
+
+- 🌐 **Live Cloud Dashboard:** [https://meet-intelligence-api.onrender.com/dashboard](https://meet-intelligence-api.onrender.com/dashboard)
+- 🩺 **Live Health API:** [https://meet-intelligence-api.onrender.com/health](https://meet-intelligence-api.onrender.com/health)
 
 Works on any Google Meet call (personal `@gmail.com` or Google Workspace) without requiring paid Google Workspace tiers, host OAuth permissions, or expensive third-party transcription APIs.
 

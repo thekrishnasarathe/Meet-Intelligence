@@ -124,12 +124,10 @@ As people speak in your meeting, the extension and dashboard track everything li
 
 ## 🖥️ Live Web Dashboard
 
-You can also view everything from a dedicated web dashboard (great for secondary monitors):
+You can view everything from the dedicated web dashboard (great for secondary monitors or remote access):
 
-1. Open your browser and go to:
-   ```
-   http://localhost:8000/dashboard
-   ```
+- **Live Cloud Dashboard:** [https://meet-intelligence-api.onrender.com/dashboard](https://meet-intelligence-api.onrender.com/dashboard)
+- **Local Dashboard:** `http://localhost:8000/dashboard`
 2. View real-time meeting status, control the bot, see live participant rosters, and trigger AI summaries directly from the web browser.
 
 ---
